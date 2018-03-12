@@ -1,19 +1,15 @@
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
+from django.db.utils import IntegrityError
+
+from users.models import User
 
 class Command(BaseCommand):
     help = 'Create default superuser account'
-
-    # def add_arguments(self, parser):
-    #     parser.add_argument('poll_id', nargs='+', type=int)
     
-    def handle(self, *args, **options):
-        for poll_id in options['poll_id']:
-            try:
-                poll = Poll.objects.get(pk=poll_id)
-            except Poll.DoesNotExist:
-                raise CommandError('Poll "%s" does not exist' % poll_id)
-
-            poll.opened = False
-            poll.save()
-
-            self.stdout.write(self.style.SUCCESS('Successfully closed poll "%s"' % poll_id))
+    # change the username and password to your admin.
+    def handle(self, **options):
+        try:
+            user = User.objects.create_superuser(username='your_admin_account', email=None, password='your_admin_password')
+            self.stdout.write(self.style.SUCCESS("Superuser 'admin' created."))
+        except IntegrityError:
+            self.stdout.write(self.style.NOTICE("Superuser 'admin' already exists."))
