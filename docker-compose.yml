@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:9.6.1-alpine
+    env_file:
+      - ./env/.env
+
+  django:
+    build: .
+    volumes:
+      - .:/srv
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./env/.env
+    links:
+      - postgres
