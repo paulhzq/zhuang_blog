@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import Post
-# Register your models here.
+
 
 class PostAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'title', 'timestamp', 'updated')
@@ -8,7 +8,9 @@ class PostAdmin(admin.ModelAdmin):
     list_editable = ('title',)
     list_filter = ('updated','timestamp')
     search_fields = ('title','content')
+
     class Meta:
         model = Post
 
-admin.site.register(Post,PostAdmin)
+
+admin.site.register(Post, PostAdmin)
